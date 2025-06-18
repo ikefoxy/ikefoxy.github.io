@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tennis Rally Game</title>
+    <style>
+        body {
+            background-color: #e9f5ff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+        canvas {
+            background-color: green;
+            border: 4px solid white;
+            margin-top: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        #info {
+            margin: 10px;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎾 Tennis Rally Game</h1>
+    <div id="info">Use your paddle (W/S keys) to keep the rally going against AI!</div>
+    <canvas id="tennisCanvas" width="800" height="400"></canvas>
+
+    <script>
+        const canvas = document.getElementById("tennisCanvas");
+        const ctx = canvas.getContext("2d");
+
+        let playerY = 150;
+        let aiY = 150;
+        const paddleHeight = 100;
+        const paddleWidth = 10;
+        let ballX = 400, ballY = 200;
+        let ballSpeedX = 5, ballSpeedY = 3;
+        let upPressed = false, downPressed = false;
+
+        document.addEventListener("keydown", function(e) {
+            if (e.key === "w") upPressed = true;
+            if (e.key === "s") downPressed = true;
+        });
+
+        document.addEventListener("keyup", function(e) {
+            if (e.key === "w") upPressed = false;
+            if (e.key === "s") downPressed = false;
+        });
+
+        function drawRect(x, y, width, height, color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, width, height);
+        }
+
+        function drawCircle(x, y, r, color) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, Math.PI * 2);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function update() {
+            if (upPressed && playerY > 0) playerY -= 6;
+            if (downPressed && playerY < canvas.height - paddleHeight) playerY += 6;
+
+            // simple AI tracks ball
+            if (aiY + paddleHeight / 2 < ballY) aiY += 3.5;
+            else if (aiY + paddleHeight / 2 > ballY) aiY -= 3.5;
+
+            ballX += ballSpeedX;
+            ballY += ballSpeedY;
+
+            if (ballY < 0 || ballY > canvas.height) ballSpeedY *= -1;
+
+            // player paddle collision
+            if (ballX < 20 && ballY > playerY && ballY < playerY + paddleHeight) {
+                ballSpeedX *= -1;
+                let deltaY = ballY - (playerY + paddleHeight / 2);
+                ballSpeedY = deltaY * 0.2;
+            }
+            // AI paddle collision
+            if (ballX > canvas.width - 20 && ballY > aiY && ballY < aiY + paddleHeight) {
+                ballSpeedX *= -1;
+                let deltaY = ballY - (aiY + paddleHeight / 2);
+                ballSpeedY = deltaY * 0.2;
+            }
+
+            // reset if miss
+            if (ballX < 0 || ballX > canvas.width) {
+                ballX = 400;
+                ballY = 200;
+                ballSpeedX = 5 * (Math.random() > 0.5 ? 1 : -1);
+                ballSpeedY = 3;
+            }
+        }
+
+        function draw() {
+            drawRect(0, 0, canvas.width, canvas.height, "green");
+            drawRect(0, playerY, paddleWidth, paddleHeight, "white");
+            drawRect(canvas.width - paddleWidth, aiY, paddleWidth, paddleHeight, "white");
+            drawCircle(ballX, ballY, 10, "yellow");
+        }
+
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();
+    </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+/* General page styles */
+.body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensures full viewport height */
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f2f2f2;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header styles */
+.common.header, .common.header2, .common.header3 {
+    font-family: 'Lora', serif;
+    color: #2a5d84;
+    text-align: center;
+    padding-top: 20px;
+}
+
+/* Navigation bar styles */
+.common.nav {
+    background-color: #e0e0e0;
+    padding: 10px;
+    text-align: center;
+}
+
+.common.nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: #2a5d84;
+    font-weight: bold;
+}
+
+.common.nav a:hover {
+    color: #1c3b5e;
+}
+
+/* Image styles */
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 10px auto;
+    border: 2px solid #ccc;
+}
+
+/* Responsive iframe container */
+iframe {
+    display: block;
+    max-width: 100%;
+    width: 90%;
+    height: 500px;
+    margin: 20px auto;
+    border: none;
+}
+
+/* List styles */
+ol.common {
+    margin: 20px;
+    padding: 10px;
+}
+
+ol.common li {
+    margin-bottom: 10px;
+}
+
+/* Footer styles */
+.common.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #dcdcdc;
+    text-align: center;
+    padding: 15px 0;
+    font-weight: bold;
+    font-size: 0.9em;
+    color: #222;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
